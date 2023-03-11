@@ -10,6 +10,7 @@ def verificaratrib ():
     Ca=int(NPCarisma.get())
     Total= Fo + De + In + Co + Sa + Ca
     print(Total)
+    
 app = Tk()
 app.title("RpgBoard")
 app.geometry("800x600")
