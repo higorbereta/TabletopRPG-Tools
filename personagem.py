@@ -27,8 +27,12 @@ def ficha_personagem():
             else:
                 voltar = True
             last_personagem = len(nome_personagem)
-    print("Selecione o Personagem para visualizar sua ficha:\n{}".format(nome_personagem))
-
+    num_personagem = int(input("Personagens existentes:\n{}\nNúmero do personagem -> ".format(nome_personagem)))
+    ##print(nome_personagem.get(num_personagem))
+    print("========== <> ==========")
+    print("Personagem: {}\n Raça: \n Classe: {}\n Nível: {}\n Exp: {}/{}".format(nome_personagem[num_personagem],classe_personagem[num_personagem],nivel_personagem[num_personagem],exp_personagem[num_personagem],nivel_personagem[num_personagem] * 5 + 5))
+    print("---x--- ATRIBUTOS ---x---")
+    print(" Força: {}\n Destreza: {}\n Inteligência: {}\n Constituição: {}\n Sabedoria: {}\n Carisma: {}".format(atributos_personagem[num_personagem]['strenght'],atributos_personagem[num_personagem]['dexterity'],atributos_personagem[num_personagem]['inteligence'],atributos_personagem[num_personagem]['constitution'],atributos_personagem[num_personagem]['wisdown'],atributos_personagem[num_personagem]['charism']))
 
 
 def new_personagem(index):
@@ -64,12 +68,6 @@ def new_personagem(index):
     
     atributos_personagem.update({index:{"strenght":strenght,"dexterity":dexterity,"inteligence":inteligence,"constitution":constitution,"wisdown":wisdown,"charism":charism}})
     ##print(atributos_personagem[index])
-
-
-def new_nivel(index):
-    next_level = exp_personagem[1] * 5 + 5
-
-
 
 
 if(__name__ == "__main__"):
