@@ -1,3 +1,4 @@
+
 nome_personagem = {} ##{1:"Kirito"}
 raca_personagem = {} ##{1:"Elfo"}
 classe_personagem = {} ##{1:"Mago"}
