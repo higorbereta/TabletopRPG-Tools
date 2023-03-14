@@ -1,11 +1,9 @@
-import menu
-
-nome_personagem = {}
-raca_personagem = {}
-classe_personagem = {}
-nivel_personagem = {}
-exp_personagem = {}
-atributos_personagem = {}
+nome_personagem = {} ##{1:"Kirito"}
+raca_personagem = {} ##{1:"Elfo"}
+classe_personagem = {} ##{1:"Mago"}
+nivel_personagem = {} ##{1:1}
+exp_personagem = {} ##{1:0}
+atributos_personagem = {} ##{1:{"strenght":0,"dexterity":2,"inteligence":10,"constitution":2,"wisdown":5,"charism":1}}
 
 def ficha_personagem():
 
@@ -27,6 +25,7 @@ def ficha_personagem():
             else:
                 voltar = True
             last_personagem = len(nome_personagem)
+            
     num_personagem = int(input("Personagens existentes:\n{}\nNúmero do personagem -> ".format(nome_personagem)))
     ##print(nome_personagem.get(num_personagem))
     print("========== <> ==========")
@@ -34,6 +33,7 @@ def ficha_personagem():
     print("---x--- ATRIBUTOS ---x---")
     print(" Força: {}\n Destreza: {}\n Inteligência: {}\n Constituição: {}\n Sabedoria: {}\n Carisma: {}".format(atributos_personagem[num_personagem]['strenght'],atributos_personagem[num_personagem]['dexterity'],atributos_personagem[num_personagem]['inteligence'],atributos_personagem[num_personagem]['constitution'],atributos_personagem[num_personagem]['wisdown'],atributos_personagem[num_personagem]['charism']))
 
+    new_exp(num_personagem)
 
 def new_personagem(index):
     print("========== <> ==========")
@@ -49,7 +49,8 @@ def new_personagem(index):
     exp_personagem.update({index:0})    
 
     print("====================")
-    total_pts = 20
+    atributos(index)
+    """total_pts = 20
     pts_distr = 0
 
     while (pts_distr != total_pts):   
@@ -67,9 +68,69 @@ def new_personagem(index):
             print("Corrija a distribuição de pontos.")
     
     atributos_personagem.update({index:{"strenght":strenght,"dexterity":dexterity,"inteligence":inteligence,"constitution":constitution,"wisdown":wisdown,"charism":charism}})
-    ##print(atributos_personagem[index])
+    ##print(atributos_personagem[index])"""
+
+def new_exp(index):
+    new_exp = int(input("Valor adicional Exp: "))
+    next_level = nivel_personagem[index] * 5 + 5
+    exp_final = exp_personagem[index] + new_exp
+
+    validanivel = True
+
+    while(validanivel):
+        if(exp_final >= (next_level)):
+            new_nivel = nivel_personagem[index] + 1
+            exp_final = exp_final - next_level
+            nivel_personagem.update({index:new_nivel})
+            print("Subiu de Nível !!")
+        else:
+            validanivel = False
+    
+    exp_personagem[index] = exp_final
+    print("Nível: {} - Exp: {}/{}".format(nivel_personagem[index],exp_personagem[index],next_level))
+
+
+def atributos(index):
+    total_pts = 19 + nivel_personagem[index]
+    print(atributos_personagem[index])
+    print(len(atributos_personagem[index]))
+    if(len(atributos_personagem) == 0):
+        pts_distr = 0
+    else:
+        pts_distr = atributos_personagem[index]['strenght'] + atributos_personagem[index]['dexterity'] + atributos_personagem[index]['inteligence'] + atributos_personagem[index]['constitution'] + atributos_personagem[index]['wisdown'] + atributos_personagem[index]['charism']
+    
+    pts_pend = total_pts - pts_distr
+
+    confirm_distrib = False
+
+    while(not confirm_distrib):
+        print("Total de pontos para distribuir: {}".format(pts_pend))
+        strenght = int(input("Forca: "))
+        dexterity = int(input("Destreza: "))
+        inteligence = int(input("Inteligência: "))
+        constitution = int(input("Constituição: "))
+        wisdown = int(input("Sabedoria: "))
+        charism = int(input("Carisma: "))
+
+        pts_distr = strenght + dexterity + inteligence + constitution + wisdown + charism
+
+        pts_pend = total_pts - pts_distr
+
+        print("Você distribuiu {} pontos.".format(pts_distr))
+        if(pts_pend != 0):
+            print("Corrija a distribuição de pontos.")
+        else:
+            confirm = int(input("Deseja confirmar? 1-Sim 2-Não -> "))
+            if(confirm == 1):
+                confirm_distrib = True
+            else:
+                print("Resetando distribuição de po")
+
+    print("Pts pendentes: {}".format(pts_distr, pts_pend))
+
+
 
 
 if(__name__ == "__main__"):
-    ##menu.menu()
+    ##menu.menu()2
     ficha_personagem()
