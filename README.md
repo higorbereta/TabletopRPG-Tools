@@ -81,9 +81,9 @@ Existem os seguintes tipos de calculadora:
 - Cadastro de Inimigos
 - Cadastro de Habilidades do persoangem
 
-# Anotações de código
+<br>
+<br>
 
-~~~ python
-def new_nivel(index):
-    next_level.update({index:(nivel_personagem[
-~~~
+# Colaboradores do Projetos
+
+- Arquivo *Front_end.py* criado por: [MarcosEngC](https://github.com/MarcosEngC)
