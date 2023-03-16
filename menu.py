@@ -1,5 +1,6 @@
 import dados_personagem
-import dado
+import random
+import calc_rpg
 
 def menu():
 
@@ -17,7 +18,7 @@ def menu():
             ##print("Dado")
             menu_dado(1) ## Origem 1 para informar que o acesso veio do Menu
         elif(menu_option == 3):
-            calculadora(False) ## Envia sinal False para sinalizar que o dado não foi rodado
+            calculadora(False,0) ## Envia sinal False e dado 0 para sinalizar que o dado não foi rodado
         elif(menu_option == 0):
             print("Encerrando aplicação")
             encerrar = True
@@ -28,29 +29,35 @@ def menu():
 
 def menu_dado(origem):
     lados = int(input("Quantidade de lados -> "))
-    resut_dado = dado.roda_dado(lados)
+    result_dado = roda_dado(lados)
     print(" ----- ")
-    print("|  {}  |".format(resut_dado))
+    print("|  {}  |".format(result_dado))
     print(" -----")
 
     if(origem == 1): ## Valida se a execução do método veio pelo Menu pra perguntar se quer a execução da calculadora
         print("Calculadora?\n| 1-Sim\n| 2-Não")
         habilita_calc = option()
         if(habilita_calc == 1):
-            calculadora(True)
+            calculadora(True,result_dado)
+    else:
+        return result_dado
 
+def roda_dado(lados):
+    valor_dado = random.randrange(1,lados)
+    
+    return valor_dado
 
 def option(): ## Método padrão de input para encurtar o código
     escolha = int(input("Seleciona a opção desejada -> "))
     return escolha
         
 
-def calculadora(dado_rodado):
+def calculadora(dado_rodado,resultado_dado):
     print("+++++++++++++++++++ ")
     print("CALCULADORA RPG")
 
     if(not dado_rodado): ## Sinal False na chamada do método indica que o dado não foi executado, e inicia a execução
-        menu_dado(2) ## Origem 2 sinaliza que a execução veio da calculadora
+        valor_dado = menu_dado(2) ## Origem 2 sinaliza que a execução veio da calculadora
 
     voltar = False
 
@@ -77,7 +84,7 @@ def calculadora(dado_rodado):
                     if(atrib_option > 0 and atrib_option <=6):
                         confirm_atrib = True
                         dificuldade = int(input("Dificuldade do teste -> "))
-                        print("Resultado do teste: {}".format(dado.atrib_teste(atrib_option,dificuldade,personagem_teste)))
+                        print("Resultado do teste: {}".format(calc_rpg.atrib_teste(atrib_option,dificuldade,personagem_teste, valor_dado)))
                         voltar = True
                     elif(atrib_option == 0):
                         print("Teste cancelado.")
