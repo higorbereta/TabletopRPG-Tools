@@ -29,7 +29,7 @@ def menu():
 
 def menu_dado(origem):
     lados = int(input("Quantidade de lados -> "))
-    result_dado = roda_dado(lados)
+    result_dado = random.randrange(1,lados)
     print(" ----- ")
     print("|  {}  |".format(result_dado))
     print(" -----")
@@ -42,10 +42,10 @@ def menu_dado(origem):
     else:
         return result_dado
 
-def roda_dado(lados):
+"""def roda_dado(lados):
     valor_dado = random.randrange(1,lados)
     
-    return valor_dado
+    return valor_dado"""
 
 def option(): ## Método padrão de input para encurtar o código
     escolha = int(input("Seleciona a opção desejada -> "))
@@ -112,9 +112,9 @@ def ficha_personagem():
         else:
             print("Lista de Personagens:\n", dados_personagem.nome_personagem)
             print("Deseja criar um novo personagem ou Acessar uma ficha?\n| 1-Acessar uma ficha\n| 2-Criar novo Personagem\n| 3-Voltar")
-            create_new = option()
+            create_access = option()
             
-            if(create_new == 1):
+            if(create_access == 1):
                 num_personagem = int(input("Número do personagem que deseja visualizar -> "))
                 exibe_personagem(num_personagem)
                 print("Opções:\n| 1-Acrescentar EXP\n| 2-Distribuir Atributos")
@@ -130,14 +130,14 @@ def ficha_personagem():
                     atualiza_atributos(num_personagem)
                     exibe_atributos(num_personagem)
                 voltar = True
-            elif(create_new == 2):
+            elif(create_access == 2):
                 print("Iniciando criação novo personagem.")
                 create_personagem()
                 last_personagem = len(dados_personagem.nome_personagem)
                 atributos_personagem(last_personagem)
                 print("Personagem {} criado.".format(last_personagem))
                 voltar = True 
-            elif(create_new == 3):
+            elif(create_access == 3):
                 print("Retornando ao menu anterior.")
                 voltar = True
             else:
@@ -244,7 +244,7 @@ def exibe_personagem(index):
     
 
 def exibe_atributos(index):
-    print("========================")
+    print("ATRIBUTOS")
     
     print("Força: {}".format(dados_personagem.atributos_personagem[index]['strenght']))
     print("Destreza: {}".format(dados_personagem.atributos_personagem[index]['dexterity']))
