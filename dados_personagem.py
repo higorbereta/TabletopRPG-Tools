@@ -18,7 +18,7 @@ def new_personagem(nome, raca, classe, especialidade):
     espec_personagem.update({index:especialidade})
     nivel_personagem.update({index:1})
     exp_personagem.update({index:0})
-    next_level.update({index:(nivel_personagem[index] * 5 + 5)})
+    new_nivel(index)
     
 def personagem_atributos(index, strenght, dexterity, inteligence, constitution, wisdown, charism):
 
@@ -51,13 +51,30 @@ def update_atributos(index,atributo,add_valor):
     if(pontos_atributos(index) < 0):
         limite = True
         mensagem = "Error"
-        rollback_pts = new_valor - add_valor
-        atributos_personagem[index][atributo] = rollback_pts
+        #rollback_pts = new_valor - add_valor
+        atributos_personagem[index][atributo] = valor_atual
     else:
         limite = False
         mensagem = "OK"
 
     return limite, mensagem
+
+def update_exp(index, add_exp):
+    exp_personagem[index] = exp_personagem[index] + add_exp
+
+    if(exp_personagem[index] > next_level[index]):
+        while(exp_personagem[index] > next_level[index]):
+            nivel_personagem[index] = nivel_personagem[index] + 1
+            exp_personagem[index] = exp_personagem[index] - next_level[index]
+            new_nivel(index)
+        level_up = True
+    else:
+        level_up = False
+    return level_up
+
+def new_nivel(index):
+    next_level.update({index:(nivel_personagem[index] * 5 + 5)})
+
     
 
 if(__name__ == "__main__"):

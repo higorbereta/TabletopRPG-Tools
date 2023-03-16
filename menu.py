@@ -1,4 +1,5 @@
 import dados_personagem
+import dado
 
 def menu():
 
@@ -8,17 +9,87 @@ def menu():
 
     while(not encerrar):
 
-        print(" 1 - Ficha de Personagem\n 2 - Dado \n 0 - Encerrar")
-        menu_option = int(input("Selecione a opção desejada -> "))
+        print(" 1 - Ficha de Personagem\n 2 - Dado\n 3 - Calculadora \n 0 - Encerrar")
+        menu_option = option()
         if(menu_option == 1):
             ficha_personagem()
         elif(menu_option == 2):
-            print("Dado")
+            ##print("Dado")
+            menu_dado(1) ## Origem 1 para informar que o acesso veio do Menu
+        elif(menu_option == 3):
+            calculadora(False) ## Envia sinal False para sinalizar que o dado não foi rodado
         elif(menu_option == 0):
             print("Encerrando aplicação")
             encerrar = True
         else:
             print("Opção não identificada.")
+
+
+
+def menu_dado(origem):
+    lados = int(input("Quantidade de lados -> "))
+    resut_dado = dado.roda_dado(lados)
+    print(" ----- ")
+    print("|  {}  |".format(resut_dado))
+    print(" -----")
+
+    if(origem == 1): ## Valida se a execução do método veio pelo Menu pra perguntar se quer a execução da calculadora
+        print("Calculadora?\n| 1-Sim\n| 2-Não")
+        habilita_calc = option()
+        if(habilita_calc == 1):
+            calculadora(True)
+
+
+def option(): ## Método padrão de input para encurtar o código
+    escolha = int(input("Seleciona a opção desejada -> "))
+    return escolha
+        
+
+def calculadora(dado_rodado):
+    print("+++++++++++++++++++ ")
+    print("CALCULADORA RPG")
+
+    if(not dado_rodado): ## Sinal False na chamada do método indica que o dado não foi executado, e inicia a execução
+        menu_dado(2) ## Origem 2 sinaliza que a execução veio da calculadora
+
+    voltar = False
+
+    while(not voltar):
+        print("| 1-Calculadora de Dano\n| 2-Calculadora de Acerto\n| 3-Teste de Atributos\n| 0-Fechar Calculadora")
+        option_calc = option()
+        if(option_calc == 1):
+            print("Calcular DANO")
+        elif(option_calc == 2):
+            print("Calcular Acerto")
+        elif(option_calc == 3):
+            ##print("TESTE DE ATRIBUTOS")
+
+            print("Qual o personagem testado?\n{}".format(dados_personagem.nome_personagem))
+            personagem_teste = int(option())
+
+            max_personagem = len(dados_personagem.nome_personagem)
+
+            if(personagem_teste > 0 and personagem_teste <= max_personagem):
+                confirm_atrib = False
+                while(not confirm_atrib):
+                    print("Atributo que será testado:\n| 1-Força\n| 2-Destreza\n| 3-Inteligência\n| 4-Constituição\n| 5-Sabedoria\n| 6-Carisma\n| 0-Cancelar")
+                    atrib_option = int(option())
+                    if(atrib_option > 0 and atrib_option <=6):
+                        confirm_atrib = True
+                        dificuldade = int(input("Dificuldade do teste -> "))
+                        print("Resultado do teste: {}".format(dado.atrib_teste(atrib_option,dificuldade,personagem_teste)))
+                        voltar = True
+                    elif(atrib_option == 0):
+                        print("Teste cancelado.")
+                        confirm_atrib = True
+                    else:
+                        print("Atributo inválido.")
+            else:
+                print("Personagem inexistente.")
+        elif(option_calc == 0):
+            voltar = True
+        else:
+            print("Opção invalida!")
             
 def ficha_personagem():
     last_personagem = len(dados_personagem.nome_personagem)
@@ -33,22 +104,32 @@ def ficha_personagem():
             atributos_personagem(last_personagem)
         else:
             print("Lista de Personagens:\n", dados_personagem.nome_personagem)
-            create_new = int(input("Deseja criar um novo personagem ou Acessar uma ficha?\n| 1-Criar novo Personagem\n| 2-Acessar uma ficha\n| 3-Voltar\n"))
+            print("Deseja criar um novo personagem ou Acessar uma ficha?\n| 1-Acessar uma ficha\n| 2-Criar novo Personagem\n| 3-Voltar")
+            create_new = option()
+            
             if(create_new == 1):
+                num_personagem = int(input("Número do personagem que deseja visualizar -> "))
+                exibe_personagem(num_personagem)
+                print("Opções:\n| 1-Acrescentar EXP\n| 2-Distribuir Atributos")
+                option_ficha = option()
+                
+                if(option_ficha == 1):
+                    pts_exp = int(input("Valor de EXP a acrescentar -> "))
+                    level_up = dados_personagem.update_exp(num_personagem, pts_exp)
+                    if(level_up == True):
+                        print("Level UP!!!")
+                        print("Novos pontos de atributos disponíveis.")
+                elif(option_ficha == 2):
+                    atualiza_atributos(num_personagem)
+                    exibe_atributos(num_personagem)
+                voltar = True
+            elif(create_new == 2):
                 print("Iniciando criação novo personagem.")
                 create_personagem()
                 last_personagem = len(dados_personagem.nome_personagem)
                 atributos_personagem(last_personagem)
                 print("Personagem {} criado.".format(last_personagem))
-                voltar = True
-            elif(create_new == 2):
-                num_personagem = int(input("Número do personagem que deseja visualizar -> "))
-                exibe_personagem(num_personagem)
-                option_ficha = int(input("Opções:\n| 1-Distribuir Atributos\n| 2-Acrescentar EXP\n"))
-                if(option_ficha == 1):
-                    atualiza_atributos(num_personagem)
-                    exibe_atributos(num_personagem)
-                voltar = True
+                voltar = True 
             elif(create_new == 3):
                 print("Retornando ao menu anterior.")
                 voltar = True
@@ -105,7 +186,8 @@ def atributos_personagem(index):
 
 def atualiza_atributos(index):
 
-    nome_atrib = int(input("Qual o atributo que deseja aumentar?\n| 1-Força\n| 2-Destreza\n| 3-Inteligência\n| 4-Constituição\n| 5-Sabedoria\n| 6-Carisma\n"))
+    print("Qual o atributo que deseja aumentar?\n| 1-Força\n| 2-Destreza\n| 3-Inteligência\n| 4-Constituição\n| 5-Sabedoria\n| 6-Carisma")
+    nome_atrib = option()
 
     limite = True
 
